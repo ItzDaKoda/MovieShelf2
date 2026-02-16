@@ -4,6 +4,8 @@ import Header from "./components/Header";
 import Home from "./pages/Home";
 import Favorites from "./pages/Favorites";
 import { searchMovies } from "./services/movieService";
+import { MovieProvider } from "./contexts/MovieContext";
+import Watchlist from "./pages/Watchlist";
 import "./App.css";
 
 function App() {
@@ -43,25 +45,29 @@ function App() {
 
   return (
     <Router>
-      <div className="app">
-        <Header searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <Home
-                searchQuery={searchQuery}
-                searchResults={searchResults}
-                searchLoading={searchLoading}
-                searchError={searchError}
-              />
-            }
-          />
-          <Route path="/favorites" element={<Favorites />} />
-        </Routes>
-      </div>
+      <MovieProvider>
+        <div className="app">
+          <Header searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <Home
+                  searchQuery={searchQuery}
+                  searchResults={searchResults}
+                  searchLoading={searchLoading}
+                  searchError={searchError}
+                />
+              }
+            />
+            <Route path="/favorites" element={<Favorites />} />
+            <Route path="/watchlist" element={<Watchlist />} />
+          </Routes>
+        </div>
+      </MovieProvider>
     </Router>
   );
 }
+
 
 export default App;

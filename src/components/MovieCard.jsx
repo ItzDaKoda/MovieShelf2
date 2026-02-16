@@ -1,4 +1,6 @@
-import { useEffect, useMemo, useState } from "react";
+
+import { useContext, useEffect, useMemo, useState } from "react";
+import { MovieContext } from "../contexts/MovieContext";
 
 const FAVORITES_KEY = "movieshelf_favorites";
 const POSTER_BASE = "https://image.tmdb.org/t/p/w500";
@@ -34,6 +36,20 @@ function MovieCard({ movie, onFavoriteChange }) {
     setIsFavorite(favs.some((m) => m.id === movie.id));
   }, [movie?.id]);
 
+    // 
+  const { addToWatchlist, removeFromWatchlist, isInWatchlist } = useContext(MovieContext);
+
+  const inWatchlist = isInWatchlist(movie.id);
+
+  const toggleWatchlist = () => {
+    if (inWatchlist) {
+      removeFromWatchlist(movie.id);
+    } else {
+      addToWatchlist(movie);
+    }
+  };
+
+
   const toggleFavorite = () => {
     const favs = readFavorites();
     const exists = favs.some((m) => m.id === movie.id);
@@ -54,24 +70,22 @@ function MovieCard({ movie, onFavoriteChange }) {
   };
 
   return (
-    <div className="movie-card">
-      <div className="movie-poster">
-        <img src={posterUrl} alt={movie.title} />
-      </div>
+    <div className="movie-info">
+  <h3 className="movie-title">{movie.title}</h3>
 
-      <div className="movie-info">
-        <h3 className="movie-title">{movie.title}</h3>
+  <div className="movie-details">
+    <span className="movie-rating">⭐ {movie.vote_average}</span>
+    <span className="movie-year">{year}</span>
+  </div>
 
-        <div className="movie-details">
-          <span className="movie-rating">⭐ {movie.vote_average}</span>
-          <span className="movie-year">{year}</span>
-        </div>
+  <button className="favorite-button" onClick={toggleFavorite}>
+    {isFavorite ? "♥ Remove Favorite" : "♡ Add to Favorites"}
+  </button>
 
-        <button className="favorite-button" onClick={toggleFavorite}>
-          {isFavorite ? "♥ Remove Favorite" : "♡ Add to Favorites"}
-        </button>
-      </div>
-    </div>
+  <button className="watchlist-button" onClick={toggleWatchlist}>
+    {inWatchlist ? "Remove from Watchlist" : "Add to Watchlist"}
+  </button>
+</div>
   );
 }
 

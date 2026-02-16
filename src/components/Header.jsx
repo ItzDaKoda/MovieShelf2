@@ -12,6 +12,11 @@ function Header({ searchQuery, setSearchQuery }) {
           <Link to="/" className="nav-link">
             Home
           </Link>
+
+          <Link to="/watchlist" className="nav-link">
+            Watchlist
+          </Link>
+
           <Link to="/favorites" className="nav-link">
             Favorites
           </Link>
@@ -25,7 +30,10 @@ function Header({ searchQuery, setSearchQuery }) {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
-          <button className="search-button" onClick={() => setSearchQuery(searchQuery)}>
+          <button
+            className="search-button"
+            onClick={() => setSearchQuery(searchQuery)}
+          >
             Search
           </button>
         </div>
